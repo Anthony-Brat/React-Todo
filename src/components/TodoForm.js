@@ -11,6 +11,10 @@ class TodoForm extends React.Component {
         return(
             <div>
                 <form>
+                    <input
+                    type = "text"
+                    name = "todo"
+                    value = {this.state.todo}/>
                     <button>Add Task</button>
                 </form>
 
