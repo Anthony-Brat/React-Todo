@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from "react-dom";
 import TodoList from "./components/TodoList";
 import TodoForm from "./components/TodoForm";
+import "./components/Todo.css"
 
 const todos = [
   {
@@ -10,7 +11,7 @@ const todos = [
     completed: false,
   },
   {
-    task: "Spray Yard with Tick Killer",
+    task: "Treat Yard with Tick Spray",
     id: 1,
     completed: false,
   },
@@ -39,34 +40,54 @@ class App extends React.Component {
     super();
     this.state = {
         todos
-    }
+    };
   }
-  toggleItem = todoId => {
-    console.log(todoId);
+  toggleTodo = todoId => {
+console.log(todoId);
     
     this.setState({
-   
-      groceries: this.state.todos.map(todo => {
+      todos: this.state.todos.map(todo => {
         if (todoId === todo.id) {
           return {
-            // return the item with purchased field toggled
             ...todo,
-            purchased: !todo.purchased
+            completed: !todo.completed
           };
         }
         return todo;
       })
     });
   };
+   
+  addTodo = todo =>{
+    const newTodo = {
+      task: todo,
+      id: Date.now(),
+      completed: false
+    }
+    this.setState({
+      todos: [...this.state.todos, newTodo]
+    })
+  }
+
+  clearCompleted = event => {
+    event.preventDefault();
+    this.setState({
+      todos: this.state.todos.filter(todo => !todo.completed)
+    })
+  }
 
   render() {
     return (
       <div className="App">
         <div className="header">
           <h1>Todo List</h1>
-          <TodoForm />
+          <TodoForm addTodo={this.addTodo} />
         </div>
-        <TodoList todos= {this.state.todos}/>
+        <TodoList 
+        todos={this.state.todos}
+        toggleTodo={this.toggleTodo}
+        clearCompleted={this.clearCompleted}
+        />
       </div>
     );
   }
